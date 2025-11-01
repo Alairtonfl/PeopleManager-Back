@@ -1,25 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PeopleManager.Domain.Enums;
+using PeopleManager.Domain.Resources;
+using System.ComponentModel.DataAnnotations;
 
 namespace PeopleManager.API.Models
 {
     public class CreatePeopleRequestJson
     {
-        [Required(ErrorMessage = "Name is required.")]
-        public string Name { get; set; }
+        [Required(ErrorMessageResourceType = typeof(BusinessExceptionMsg), ErrorMessageResourceName = "EXC0008")]
+        public string? Name { get; set; }
 
-        public string? Gender { get; set; }
-
-        [EmailAddress(ErrorMessage = "The provided email is not valid.")]
+        public GenderType? Gender { get; set; }
         public string? Email { get; set; }
 
-        [Required(ErrorMessage = "Birth date is required.")]
-        [DataType(DataType.Date, ErrorMessage = "Invalid birth date format.")]
+        [Required(ErrorMessageResourceType = typeof(BusinessExceptionMsg), ErrorMessageResourceName = "EXC0008")]
         public DateTime BirthDate { get; set; }
 
         public string? Naturality { get; set; }
 
         public string? Nationality { get; set; }
 
-        public string CPF { get; set; }
+        [Required(ErrorMessageResourceType = typeof(BusinessExceptionMsg), ErrorMessageResourceName = "EXC0008")]
+        public string? CPF { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(BusinessExceptionMsg), ErrorMessageResourceName = "EXC0008")]
+        public string? Password { get; set; }
     }
 }

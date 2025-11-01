@@ -1,10 +1,12 @@
-﻿namespace PeopleManager.Application.DTOs.Requests
+﻿using PeopleManager.Domain.Enums;
+
+namespace PeopleManager.Application.DTOs.Requests
 {
     public class CreatePeopleRequestDto
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string? Gender { get; set; }
+        public GenderType Gender { get; set; }
 
         public string? Email { get; set; }
 
@@ -14,6 +16,8 @@
 
         public string? Nationality { get; set; }
 
-        public string CPF { get; set; }
+        public string? CPF { get; set; }
+
+        public string? Password { get; set; }
     }
 }

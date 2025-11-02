@@ -9,6 +9,7 @@ namespace PeopleManager.API.Mapping
         public MappingProfile()
         {
             CreateMap<CreatePeopleRequestJson, CreatePeopleRequestDto>();
+            CreateMap<UpdatePeopleRequestJson, UpdatePeopleRequestDto>();
         }
     }
 }

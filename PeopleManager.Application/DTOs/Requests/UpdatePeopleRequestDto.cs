@@ -2,7 +2,7 @@
 
 namespace PeopleManager.Application.DTOs.Requests
 {
-    public class CreatePeopleRequestDto
+    public class UpdatePeopleRequestDto
     {
         public string? Name { get; set; }
 
@@ -10,14 +10,12 @@ namespace PeopleManager.Application.DTOs.Requests
 
         public string? Email { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         public string? Naturality { get; set; }
 
         public string? Nationality { get; set; }
 
         public string? CPF { get; set; }
-
-        public string? Password { get; set; }
     }
 }

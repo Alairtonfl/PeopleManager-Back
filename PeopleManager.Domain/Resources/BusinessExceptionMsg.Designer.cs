@@ -97,7 +97,7 @@ namespace PeopleManager.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Usuário não encontrado..
+        ///   Looks up a localized string similar to Pessoa não encontrada..
         /// </summary>
         public static string EXC0005 {
             get {

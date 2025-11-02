@@ -1,10 +1,13 @@
-﻿namespace PeopleManager.Application.DTOs.Responses
+﻿using PeopleManager.Domain.Enums;
+
+namespace PeopleManager.Application.DTOs.Responses
 {
     public class PeopleResponseDto
     {
+        public long? Id { get; set; }
         public string Name { get; set; }
 
-        public string? Gender { get; set; }
+        public GenderType? Gender { get; set; }
 
         public string? Email { get; set; }
 

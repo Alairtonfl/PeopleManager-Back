@@ -106,6 +106,7 @@ builder.Services.AddScoped<IPeopleService, PeopleService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPleopleValidator, PleopleValidator>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 

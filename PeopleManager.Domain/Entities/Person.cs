@@ -6,7 +6,7 @@ namespace PeopleManager.Domain.Entities
     {
         public string Name { get; set; }
 
-        public GenderType Gender { get; set; }
+        public GenderType? Gender { get; set; }
 
         public string Email { get; set; }
 

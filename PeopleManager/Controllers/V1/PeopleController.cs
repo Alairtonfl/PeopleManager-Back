@@ -37,5 +37,64 @@ namespace PeopleManager.API.Controllers.V1
                 Success = true,
             });
         }
+
+        [HttpGet("get-all")]
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        {
+            List<PeopleResponseDto> result = await _peopleService.GetAllAsync(cancellationToken);
+
+            return Ok(new ApiResponse<List<PeopleResponseDto>>
+            {
+                Data = result,
+                Success = true,
+            });
+        }
+
+        [HttpGet("get-by-cpf/{cpf}")]
+        public async Task<IActionResult> GetByCpf([FromRoute] string cpf, CancellationToken cancellationToken)
+        {
+            PeopleResponseDto result = await _peopleService.GetByCpfAsync(cpf, cancellationToken);
+
+            return Ok(new ApiResponse<PeopleResponseDto>
+            {
+                Data = result,
+                Success = true,
+            });
+        }
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteById([FromRoute] long id, CancellationToken cancellationToken)
+        {
+            await _peopleService.DeleteByIdAsync(id, cancellationToken);
+
+            return Ok(new ApiResponse<string>
+            {
+                Data = "Pessoa deletada com sucesso.",
+                Success = true,
+            });
+        }
+
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateById([FromRoute] long id, [FromBody] UpdatePeopleRequestJson request, CancellationToken cancellationToken)
+        {
+            UpdatePeopleRequestDto dto = _mapper.Map<UpdatePeopleRequestDto>(request);
+            PeopleResponseDto result = await _peopleService.UpdateByIdAsync(id, dto, cancellationToken);
+            return Ok(new ApiResponse<PeopleResponseDto>
+            {
+                Data = result,
+                Success = true,
+            });
+        }
+
+        [HttpGet("get-by-id/{id}")]
+        public async Task<IActionResult> GetById([FromRoute] long id, CancellationToken cancellationToken)
+        {
+            PeopleResponseDto result = await _peopleService.GetByIdAsync(id, cancellationToken);
+
+            return Ok(new ApiResponse<PeopleResponseDto>
+            {
+                Data = result,
+                Success = true,
+            });
+        }
     }
 }

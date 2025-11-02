@@ -34,5 +34,29 @@ namespace PeopleManager.Application.Validators
             if (person != null)
                 throw new BusinessException(BusinessExceptionMsg.EXC0002);
         }
+
+        public async Task ValidateAsync(Person person, UpdatePeopleRequestDto newPerson, CancellationToken cancellationToken)
+        {
+            if(person.CPF != newPerson.CPF)
+            {
+                if (!Utilitie.IsCpfValid(newPerson.CPF))
+                    throw new BusinessException(string.Format(BusinessExceptionMsg.EXC0009, nameof(newPerson.CPF)));
+
+                Person? existPerson = await _peopleRepository.GetByCpfAsync(newPerson.CPF, cancellationToken);
+                if (existPerson != null)
+                    throw new BusinessException(BusinessExceptionMsg.EXC0007);
+            }
+
+            if (newPerson.Email != null && !Utilitie.EmailIsValid(newPerson.Email))
+                throw new BusinessException(string.Format(BusinessExceptionMsg.EXC0009, nameof(newPerson.Email)));
+
+            if(person.Email != newPerson.Email)
+            {
+                Person existPerson = await _peopleRepository.GetByEmailAsync(newPerson.Email, cancellationToken);
+                if (existPerson != null)
+                    throw new BusinessException(BusinessExceptionMsg.EXC0002);
+            }
+
+        }
     }
 }

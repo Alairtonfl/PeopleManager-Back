@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace PeopleManager.Application.Utilities
 {
@@ -16,13 +17,10 @@ namespace PeopleManager.Application.Utilities
 
         public static bool PasswordIsValid(string password)
         {
-            if (string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(password) || password.Length < 8)
                 return false;
 
-            // Password must be at least 8 characters long, contain at least one digit, one uppercase letter, and one lowercase letter
-            var regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$", RegexOptions.Compiled);
-
-            return regex.IsMatch(password);
+            return true;
         }
 
         public static string ToPascalCase(string input)
@@ -64,6 +62,26 @@ namespace PeopleManager.Application.Utilities
 
             int remainder = sum % 11;
             return (remainder < 2 ? 0 : 11 - remainder).ToString();
+        }
+
+        public static string GetDescription(this Enum value)
+        {
+            var field = value.GetType().GetField(value.ToString());
+
+            if (field != null &&
+                Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attribute)
+            {
+                return attribute.Description;
+            }
+
+            return value.ToString();
+        }
+
+        public static string RemoveCpfMask(string cpf)
+        {
+            Regex OnlyDigitsRegex = new Regex(@"\D", RegexOptions.Compiled);
+            if (string.IsNullOrWhiteSpace(cpf)) return string.Empty;
+                return OnlyDigitsRegex.Replace(cpf, "");
         }
     }
 }

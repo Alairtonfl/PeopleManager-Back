@@ -130,7 +130,7 @@
     <value>Credenciais inválidas.</value>
   </data>
   <data name="EXC0005" xml:space="preserve">
-    <value>Usuário não encontrado.</value>
+    <value>Pessoa não encontrada.</value>
   </data>
   <data name="EXC0006" xml:space="preserve">
     <value>Usuário atualizado com sucesso.</value>

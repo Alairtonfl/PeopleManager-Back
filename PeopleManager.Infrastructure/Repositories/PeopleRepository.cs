@@ -25,22 +25,22 @@ namespace PeopleManager.Infrastructure.Repositories
 
         public async Task<List<Person>?> GetAll(CancellationToken cancellationToken = default)
         {
-            return await _context.Person.ToListAsync(cancellationToken);
+            return await _context.Person.Where(p => p.DeletionDate == null).ToListAsync(cancellationToken);
         }
 
         public async Task<Person?> GetByCpfAsync(string cpf, CancellationToken cancellationToken = default)
         {
-            return await _context.Person.FirstOrDefaultAsync(p => p.CPF == cpf, cancellationToken);
+            return await _context.Person.FirstOrDefaultAsync(p => p.CPF == cpf && p.DeletionDate == null, cancellationToken);
         }
 
         public async Task<Person?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
         {
-            return await _context.Person.FirstOrDefaultAsync(p => p.Email == email, cancellationToken);
+            return await _context.Person.FirstOrDefaultAsync(p => p.Email == email && p.DeletionDate == null, cancellationToken);
         }
 
         public async Task<Person?> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
-            return await _context.Person.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+            return await _context.Person.FirstOrDefaultAsync(p => p.Id == id && p.DeletionDate == null, cancellationToken);
         }
 
         public async Task UpdateAsync(Person person, CancellationToken cancellationToken = default)

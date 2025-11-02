@@ -8,7 +8,7 @@ namespace PeopleManager.Domain.Entities
 
         public GenderType? Gender { get; set; }
 
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         public string Password { get; set; }
 
@@ -19,5 +19,6 @@ namespace PeopleManager.Domain.Entities
         public string? Nationality { get; set; }
 
         public string? CPF { get; set; }
+        public string? Address { get; set; }
     }
 }

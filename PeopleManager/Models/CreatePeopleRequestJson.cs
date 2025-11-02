@@ -24,5 +24,7 @@ namespace PeopleManager.API.Models
 
         [Required(ErrorMessageResourceType = typeof(BusinessExceptionMsg), ErrorMessageResourceName = "EXC0008")]
         public string? Password { get; set; }
+
+        public string? Address { get; set; }
     }
 }

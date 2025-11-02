@@ -62,6 +62,59 @@ namespace PeopleManager.Application.Services
                     Nationality = person.Nationality,
                     Naturality = person.Naturality,
                     Gender = person.Gender,
+                    Address = person.Address
+                };
+
+                await _unitOfWork.CommitAsync(cancellationToken);
+                return peopleResponseDto;
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackAsync(cancellationToken);
+                throw ex;
+            }
+        }
+
+        public async Task<PeopleResponseDto> CreateV2Async(CreatePeopleRequestDto request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _unitOfWork.BeginTransactionAsync(cancellationToken);
+
+                await _pleopleValidator.ValidateAsync(request, cancellationToken);
+
+                if (request.Address == null)
+                    throw new BusinessException(string.Format(BusinessExceptionMsg.EXC0009, nameof(request.Address)));
+
+                Person person = new Person
+                {
+                    Name = request.Name,
+                    CPF = Utilitie.RemoveCpfMask(request.CPF!),
+                    Email = request.Email,
+                    BirthDate = request.BirthDate,
+                    Gender = request.Gender,
+                    Nationality = request.Nationality,
+                    Naturality = request.Naturality,
+                    CreationDate = DateTime.UtcNow,
+                    UpdateDate = DateTime.UtcNow,
+                    DeletionDate = null,
+                    Password = _passwordHasher.HashPassword(request.Password),
+                    Address = request.Address
+                };
+
+                await _peopleRepository.CreateAsync(person, cancellationToken);
+
+                PeopleResponseDto peopleResponseDto = new PeopleResponseDto
+                {
+                    Id = person.Id,
+                    BirthDate = person.BirthDate,
+                    CPF = person.CPF!,
+                    Email = person.Email,
+                    Name = person.Name!,
+                    Nationality = person.Nationality,
+                    Naturality = person.Naturality,
+                    Gender = person.Gender,
+                    Address = person.Address
                 };
 
                 await _unitOfWork.CommitAsync(cancellationToken);
@@ -112,7 +165,8 @@ namespace PeopleManager.Application.Services
                     BirthDate = person.BirthDate,
                     Gender = person.Gender,
                     Nationality = person.Nationality,
-                    Naturality = person.Naturality
+                    Naturality = person.Naturality,
+                    Address = person.Address
                 }).ToList();
 
                 return peopleResponseDtos;
@@ -127,19 +181,21 @@ namespace PeopleManager.Application.Services
         {
             try
             {
-                Person? person = await _peopleRepository.GetByCpfAsync(cpf, cancellationToken);
+                Person? person = await _peopleRepository.GetByCpfAsync(Utilitie.RemoveCpfMask(cpf), cancellationToken);
                 if (person == null)
                     throw new BusinessException(string.Format(BusinessExceptionMsg.EXC0005));
 
                 PeopleResponseDto peopleResponseDto = new PeopleResponseDto
                 {
+                    Id = person.Id,
                     BirthDate = person.BirthDate,
                     CPF = person.CPF!,
                     Email = person.Email,
                     Name = person.Name,
                     Nationality = person.Nationality,
                     Naturality = person.Naturality,
-                    Gender = person.Gender
+                    Gender = person.Gender,
+                    Address = person.Address
                 };
                 return peopleResponseDto;
             }
@@ -166,7 +222,8 @@ namespace PeopleManager.Application.Services
                     Nationality = person.Nationality,
                     Naturality = person.Naturality,
                     Gender = person.Gender,
-                    Id = person.Id
+                    Id = person.Id,
+                    Address = person.Address
                 };
 
                 return peopleResponseDto;
@@ -202,13 +259,15 @@ namespace PeopleManager.Application.Services
 
                 PeopleResponseDto peopleResponseDto = new PeopleResponseDto
                 {
+                    Id = person.Id,
                     BirthDate = person.BirthDate,
                     CPF = person.CPF!,
                     Email = person.Email,
                     Name = person.Name,
                     Nationality = person.Nationality,
                     Gender = person.Gender,
-                    Naturality = person.Naturality
+                    Naturality = person.Naturality,
+                    Address = person.Address
                 };
 
                 await _unitOfWork.CommitAsync(cancellationToken);

@@ -17,6 +17,9 @@ namespace PeopleManager.Application.Validators
         }
         public async Task ValidateAsync(CreatePeopleRequestDto dto, CancellationToken cancellationToken)
         {
+            if(dto.BirthDate > DateTime.UtcNow)
+                throw new BusinessException(string.Format(BusinessExceptionMsg.EXC0009, nameof(dto.BirthDate)));
+
             if (!Utilitie.IsCpfValid(dto.CPF))
                 throw new BusinessException(string.Format(BusinessExceptionMsg.EXC0009, nameof(dto.CPF)));
 
@@ -26,23 +29,29 @@ namespace PeopleManager.Application.Validators
             if (!Utilitie.PasswordIsValid(dto.Password))
                 throw new BusinessException(string.Format(BusinessExceptionMsg.EXC0009, nameof(dto.Password)));
 
-            Person? person = await _peopleRepository.GetByCpfAsync(dto.CPF, cancellationToken);
+            Person? person = await _peopleRepository.GetByCpfAsync(Utilitie.RemoveCpfMask(dto.CPF!), cancellationToken);
             if (person != null)
                 throw new BusinessException(BusinessExceptionMsg.EXC0007);
 
-            person = await _peopleRepository.GetByEmailAsync(dto.Email, cancellationToken);
-            if (person != null)
-                throw new BusinessException(BusinessExceptionMsg.EXC0002);
+            if(dto.Email != null)
+            {
+                person = await _peopleRepository.GetByEmailAsync(dto.Email, cancellationToken);
+                if (person != null)
+                    throw new BusinessException(BusinessExceptionMsg.EXC0002);
+            }
         }
 
         public async Task ValidateAsync(Person person, UpdatePeopleRequestDto newPerson, CancellationToken cancellationToken)
         {
-            if(person.CPF != newPerson.CPF)
+            if (newPerson.BirthDate > DateTime.UtcNow)
+                throw new BusinessException(string.Format(BusinessExceptionMsg.EXC0009, nameof(newPerson.BirthDate)));
+
+            if (person.CPF != newPerson.CPF)
             {
                 if (!Utilitie.IsCpfValid(newPerson.CPF))
                     throw new BusinessException(string.Format(BusinessExceptionMsg.EXC0009, nameof(newPerson.CPF)));
 
-                Person? existPerson = await _peopleRepository.GetByCpfAsync(newPerson.CPF, cancellationToken);
+                Person? existPerson = await _peopleRepository.GetByCpfAsync(Utilitie.RemoveCpfMask(newPerson.CPF!), cancellationToken);
                 if (existPerson != null)
                     throw new BusinessException(BusinessExceptionMsg.EXC0007);
             }
@@ -56,7 +65,6 @@ namespace PeopleManager.Application.Validators
                 if (existPerson != null)
                     throw new BusinessException(BusinessExceptionMsg.EXC0002);
             }
-
         }
     }
 }

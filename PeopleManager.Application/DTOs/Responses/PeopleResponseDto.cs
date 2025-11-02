@@ -18,5 +18,7 @@ namespace PeopleManager.Application.DTOs.Responses
         public string? Nationality { get; set; }
 
         public string CPF { get; set; }
+
+        public string? Address { get; set; }
     }
 }

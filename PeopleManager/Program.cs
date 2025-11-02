@@ -73,12 +73,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", builder =>
     {
-        builder.WithOrigins("http://localhost:5173") // URL do seu front-end
+        builder.SetIsOriginAllowed(_ => true) // permite qualquer origem
                .AllowAnyHeader()
                .AllowAnyMethod()
-               .AllowCredentials(); // permite envio de cookies e credenciais
+               .AllowCredentials(); // cookies funcionam
     });
 });
+
 
 builder.Services.AddAuthorization();
 

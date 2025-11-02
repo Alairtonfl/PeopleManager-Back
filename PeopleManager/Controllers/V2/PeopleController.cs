@@ -29,7 +29,7 @@ namespace PeopleManager.API.Controllers.V2
         {
             CreatePeopleRequestDto dto = _mapper.Map<CreatePeopleRequestDto>(request);
 
-            PeopleResponseDto result = await _peopleService.CreateAsync(dto, cancellationToken);
+            PeopleResponseDto result = await _peopleService.CreateV2Async(dto, cancellationToken);
 
             return Ok(new ApiResponse<PeopleResponseDto>
             {

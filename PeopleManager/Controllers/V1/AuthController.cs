@@ -29,8 +29,8 @@ namespace PeopleManager.API.Controllers.V1
             CookieOptions cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false,
-                SameSite = SameSiteMode.Lax,
+                Secure = true,
+                SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddDays(1)
             };
 
